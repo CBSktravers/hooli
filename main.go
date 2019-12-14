@@ -3,9 +3,18 @@ package main
 import (
 	"log"
 	"net/http"
+	"github.com/CBSktravers/hooli/server"
+)
+
+var (
+	HooliCertFile    = "./certs/local.localhost.cert" //os.Getenv("Hooli_CERT_FILE")
+	HooliKeyFile     = "./certs/local.localhost.key"  //os.Getenv("Hooli_KEY_FILE")
+	HooliServiceAddr = ":8080"                        //os.Getenv("Hooli_SERVICE_ADDR")
 )
 
 const message = "Hello Wolrd"
+
+//const HooliServiceAddr = ":8080"
 
 func main() {
 	mux := http.NewServeMux()
@@ -14,8 +23,12 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(message))
 	})
-	err := http.ListenAndServe(":8080", mux)
+
+	srv := server.New(mux, HooliServiceAddr)
+
+	err := srv.ListenAndServeTLS(HooliCertFile, HooliKeyFile)
 	if err != nil {
 		log.Fatalf("server failed to start: %v", err)
 	}
 }
+

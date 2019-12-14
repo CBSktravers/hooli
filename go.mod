@@ -1,3 +1,3 @@
-module github.com/CBSktravers/hooli
+module hooli
 
 go 1.13
