@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/CBSktravers/hooli/service"
+	"github.com/CBSktravers/hooli/metadataservice/internal/app/service"
 )
 
 var appName = "metadataservice"
