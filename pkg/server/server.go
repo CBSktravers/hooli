@@ -8,11 +8,10 @@ import (
 )
 
 //NewServer returns a fully configured http.Server
-func NewServer(listenPort string) (*http.Server, error) {
+func NewServer(mux *http.ServeMux, listenPort string) (*http.Server, error) {
 	// will add error message as this function grows
 	logger := log.New(os.Stdout, "hooli ", log.LstdFlags|log.Lshortfile)
 	logger.Println("server starting")
-	mux := http.NewServeMux()
 
 	srv := &http.Server{
 		Handler:      mux,
