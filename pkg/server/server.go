@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// NewServer returns a fully configured http.Server or an error
+//NewServer returns a fully configured http.Server
 func NewServer(listenPort string) (*http.Server, error) {
 	// will add error message as this function grows
 	logger := log.New(os.Stdout, "hooli ", log.LstdFlags|log.Lshortfile)
