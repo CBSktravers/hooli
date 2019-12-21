@@ -46,7 +46,6 @@ func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/AddRow", h.Logger(h.AddRow))
 	mux.HandleFunc("/UpdateRow", h.Logger(h.UpdateRow))
 	mux.HandleFunc("/DeleteRow", h.Logger(h.DeleteRow))
-
 }
 
 func NewHandlers(logger *log.Logger) *Handlers {
