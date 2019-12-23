@@ -41,6 +41,7 @@ func (h *Handlers) Logger(next http.HandlerFunc) http.HandlerFunc {
 		next(w, r)
 	}
 }
+
 func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/GetRow", h.Logger(h.GetRow))
 	mux.HandleFunc("/AddRow", h.Logger(h.AddRow))
