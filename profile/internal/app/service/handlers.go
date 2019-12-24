@@ -11,13 +11,13 @@ import (
 
 var DBClient dbclient.IBoltClient
 
-func GetAccount(w http.ResponseWriter, r *http.Request) {
+func GetProfile(w http.ResponseWriter, r *http.Request) {
 
-	// Read the 'accountId' path parameter from the mux map
-	var accountId = mux.Vars(r)["accountId"]
+	// Read the 'profileId' path parameter from the mux map
+	var profileId = mux.Vars(r)["profileId"]
 
-	// Read the account struct BoltDB
-	account, err := DBClient.QueryAccount(accountId)
+	// Read the profile struct BoltDB
+	profile, err := DBClient.QueryProfile(profileId)
 
 	// If err, return a 404
 	if err != nil {
@@ -26,7 +26,7 @@ func GetAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// If found, marshal into JSON, write headers and content
-	data, _ := json.Marshal(account)
+	data, _ := json.Marshal(profile)
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
 	w.WriteHeader(http.StatusOK)
