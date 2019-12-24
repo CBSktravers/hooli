@@ -73,3 +73,32 @@ func (bc *BoltClient) seedProfiles() {
 	}
 	fmt.Printf("Seeded %v fake profiless...\n", total)
 }
+
+func (bc *BoltClient) QueryProfile(profileId string) (model.Profile, error) {
+	// Allocate an empty Profile instance we'll let json.Unmarhal populate for us in a bit.
+	profile := model.Profile{}
+
+	// Read an object from the bucket using boltDB.View
+	err := bc.boltDB.View(func(tx *bolt.Tx) error {
+		// Read the bucket from the DB
+		b := tx.Bucket([]byte("ProfileBucket"))
+
+		// Read the value identified by our profileId supplied as []byte
+		profileBytes := b.Get([]byte(profileId))
+		if profileBytes == nil {
+			return fmt.Errorf("No profile found for " + profileId)
+		}
+		// Unmarshal the returned bytes into the profile struct we created at
+		// the top of the function
+		json.Unmarshal(profileBytes, &profile)
+
+		// Return nil to indicate nothing went wrong, e.g no error
+		return nil
+	})
+	// If there were an error, return the error
+	if err != nil {
+		return model.Profile{}, err
+	}
+	// Return the Profile struct and nil as error.
+	return profile, nil
+}
