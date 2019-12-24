@@ -31,8 +31,8 @@ func (bc *BoltClient) OpenBoltDb() {
 
 // Start seeding profiles
 func (bc *BoltClient) Seed() {
-	initializeBucket()
-	seedProfiles()
+	bc.initializeBucket()
+	bc.seedProfiles()
 }
 
 // Creates an "ProfileBucket" in our BoltDB. It will overwrite any existing bucket of the same name.
