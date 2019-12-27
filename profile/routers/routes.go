@@ -2,6 +2,8 @@ package routers
 
 import (
 	"net/http"
+
+	"github.com/CBSktravers/hooli/profile/handlers"
 )
 
 // Defines a single route, e.g. a human readable name, HTTP method and the
@@ -20,33 +22,33 @@ type Routes []Route
 var routes = Routes{
 
 	Route{
-		"CreateProfile", // Name
-		"POST",          // HTTP method
-		"/profile",      // Route pattern
-		CreateProfile,   // Endpoint function
+		"CreateProfile",        // Name
+		"POST",                 // HTTP method
+		"/profile",             // Route pattern
+		handlers.CreateProfile, // Endpoint function
 	},
 	Route{
-		"UpdateProfile", // Name
-		"POST",          // HTTP method
-		"/profile",      // Route pattern
-		UpdateProfile,   // Endpoint function
+		"UpdateProfile",        // Name
+		"POST",                 // HTTP method
+		"/profile",             // Route pattern
+		handlers.UpdateProfile, // Endpoint function
 	},
 	Route{
-		"DeleteProfile", // Name
-		"POST",          // HTTP method
-		"/profile",      // Route pattern
-		DeleteProfile,   // Endpoint function
+		"DeleteProfile",        // Name
+		"POST",                 // HTTP method
+		"/profile",             // Route pattern
+		handlers.DeleteProfile, // Endpoint function
 	},
 	Route{
-		"Getrofile", // Name
-		"GET",       // HTTP method
-		"/profile",  // Route pattern
-		GetProfile,  // Endpoint function
+		"Getrofile",         // Name
+		"GET",               // HTTP method
+		"/profile",          // Route pattern
+		handlers.GetProfile, // Endpoint function
 	},
 	Route{
-		"GetProfiles", // Name
-		"GET",         // HTTP method
-		"/profiles",   // Route pattern
-		GetProfiles,   // Endpoint function
+		"GetProfiles",        // Name
+		"GET",                // HTTP method
+		"/profiles",          // Route pattern
+		handlers.GetProfiles, // Endpoint function
 	},
 }
