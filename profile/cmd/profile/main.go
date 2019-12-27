@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/CBSktravers/hooli/profile/internal/app/service"
+	"github.com/CBSktravers/hooli/profile/service"
 )
 
 var appName = "profileservice"
