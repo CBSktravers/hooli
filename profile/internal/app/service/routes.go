@@ -18,12 +18,9 @@ type Routes []Route
 var routes = Routes{
 
 	Route{
-		"GetProfile",            // Name
-		"GET",                   // HTTP method
-		"/profiles/{profileId}", // Route pattern
-		func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			w.Write([]byte("{\"result\":\"OK\"}"))
-		},
+		"CreateProfile", // Name
+		"POST",          // HTTP method
+		"/profile",      // Route pattern
+		CreateProfile,
 	},
 }
