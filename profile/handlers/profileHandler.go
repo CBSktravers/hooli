@@ -66,7 +66,7 @@ func GetProfiles(w http.ResponseWriter, r *http.Request) {
 	col := mongoStore.session.DB(database).C(collection)
 
 	results := []Profile{}
-	col.Find(bson.M{"title": bson.RegEx{"", ""}}).All(&results)
+	col.Find(bson.M{"name": bson.RegEx{"", ""}}).All(&results)
 	jsonString, err := json.Marshal(results)
 	if err != nil {
 		panic(err)
