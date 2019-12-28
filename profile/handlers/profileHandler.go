@@ -15,7 +15,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 func GetProfiles(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Here are the Profiles"))
+	w.Write([]byte("Profiles gotten"))
 }
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
