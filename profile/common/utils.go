@@ -2,7 +2,6 @@ package common
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -42,7 +41,7 @@ func DisplayAppError(w http.ResponseWriter, handlerError error, message string, 
 // AppConfig holds the configuration values from config.json file
 var AppConfig configuration
 
-// Initialize AppConfig
+// InitConfig Initialize AppConfig by reading config.json
 func InitConfig() {
 	file, err := os.Open("profile/common/config.json")
 	defer file.Close()
@@ -55,7 +54,6 @@ func InitConfig() {
 	if err != nil {
 		log.Fatalf("[logAppConfig]: %s\n", err)
 	}
-	fmt.Println(AppConfig.Database)
 }
 
 // Session holds the mongodb session for database access
@@ -76,18 +74,4 @@ func GetSession() *mgo.Session {
 		}
 	}
 	return session
-}
-
-// Create database session
-func createDbSession() {
-	var err error
-	session, err = mgo.DialWithInfo(&mgo.DialInfo{
-		Addrs:    []string{AppConfig.MongoDBHost},
-		Username: AppConfig.DBUser,
-		Password: AppConfig.DBPwd,
-		Timeout:  60 * time.Second,
-	})
-	if err != nil {
-		log.Fatalf("[createDbSession]: %s\n", err)
-	}
 }
