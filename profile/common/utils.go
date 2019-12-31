@@ -43,7 +43,7 @@ func DisplayAppError(w http.ResponseWriter, handlerError error, message string, 
 var AppConfig configuration
 
 // Initialize AppConfig
-func initConfig() {
+func InitConfig() {
 	file, err := os.Open("github.com/CBSktravers/hooli/profile/common/config.json")
 	defer file.Close()
 	if err != nil {
