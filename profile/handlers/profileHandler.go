@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 )
 
@@ -13,9 +14,22 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 // Handler for HTTP Get - "/profiles"
 // Returns all profiles documents
 func GetProfiles(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	// Create new context
+	context := NewContext()
+	defer context.Close()
+	c := context.DbCollection("profile")
+	repo := &data.ShowTimeRepository{c}
+	// Get all profiles form repository
+	profiles := repo.GetAll()
+	j, err := json.Marshal(ProfilesResource{Data: profiles})
+	if err != nil {
+		common.DisplayAppError(w, err, "An unexpected error has occurred", 500)
+		return
+	}
+	// Send response back
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Profiles gotten"))
+	w.Write(j)
 }
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
