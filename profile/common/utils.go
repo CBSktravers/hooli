@@ -44,7 +44,7 @@ var AppConfig configuration
 
 // Initialize AppConfig
 func InitConfig() {
-	file, err := os.Open("github.com/CBSktravers/hooli/profile/common/config.json")
+	file, err := os.Open("profile/common/config.json")
 	defer file.Close()
 	if err != nil {
 		log.Fatalf("[loadConfig]: %s\n", err)
