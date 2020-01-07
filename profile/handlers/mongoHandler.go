@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/CBSktravers/hooli/profile/models"
@@ -27,8 +26,7 @@ func createSession() *mongo.Client {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println("Connected to MongoDB!")
+	log.Println("Connected to MongoDB!")
 
 	return client
 }
@@ -49,7 +47,7 @@ func addProfile() []models.Profile {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+	log.Println("Inserted a single document: ", insertResult.InsertedID)
 
 	return profiles
 }

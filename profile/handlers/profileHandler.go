@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -31,8 +29,6 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 }
 func CreateProfile(w http.ResponseWriter, r *http.Request) {
 	addProfile()
-	fmt.Println(r)
-	fmt.Println(json.NewDecoder(r.Body))
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Profile Created"))
