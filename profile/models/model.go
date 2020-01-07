@@ -1,11 +1,10 @@
 package models
 
-import (
-	"gopkg.in/mgo.v2/bson"
-)
-
+// Profile is object for profiles in mongodatabase
+// Consiting of name of the profile and Department
+// Last feild is keys for mapping
 type Profile struct {
-	Id         bson.ObjectId     `bson:"_id,omitempty" json:"id"`
+	//ID         bson.ObjectId     `bson:"_id,omitempty" json:"id"`
 	Name       string            `bson:"name" json:"name"`
 	Department string            `bson:"department" json:"department"`
 	Keys       map[string]string `bson:"keys" json:"keys"`

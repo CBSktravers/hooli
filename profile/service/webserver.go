@@ -4,13 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/CBSktravers/hooli/profile/common"
 	"github.com/CBSktravers/hooli/profile/routers"
 )
 
 func StartWebServer(port string) {
-	//set up database config
-	common.InitConfig()
 	r := routers.NewRouter()
 	http.Handle("/", r)
 	log.Println("Starting HTTP service at " + port)
