@@ -32,7 +32,7 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 func CreateProfile(w http.ResponseWriter, r *http.Request) {
 	addProfile()
 	fmt.Println(r)
-	json.NewDecoder(r.Body)
+	fmt.Println(json.NewDecoder(r.Body))
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Profile Created"))
