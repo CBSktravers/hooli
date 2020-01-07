@@ -40,7 +40,7 @@ var routes = Routes{
 		handlers.DeleteProfile, // Endpoint function
 	},
 	Route{
-		"Getrofile",         // Name
+		"GetProfile",        // Name
 		"GET",               // HTTP method
 		"/profile",          // Route pattern
 		handlers.GetProfile, // Endpoint function
