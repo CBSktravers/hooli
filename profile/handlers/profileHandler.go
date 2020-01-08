@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/CBSktravers/hooli/profile/models"
 )
 
 func GetProfile(w http.ResponseWriter, r *http.Request) {
@@ -32,9 +34,16 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 }
 func CreateProfile(w http.ResponseWriter, r *http.Request) {
 	log.Println("Create Profile called by user:")
-	log.Println("User raw input:", r)
-	log.Println("User input:", json.NewDecoder(r.Body))
-	AddProfileMong()
+	decoder := json.NewDecoder(r.Body)
+	var profile models.Profile
+	err := decoder.Decode(&profile)
+
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println("User input:", profile)
+	//AddProfileMong()
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Profile Created"))
