@@ -33,7 +33,7 @@ func createClient() *mongo.Client {
 }
 
 func AddProfileMongo() {
-	var profiles []models.Profile
+	// Establish client to mongodabase
 	client := createClient()
 
 	// Get a handle for your collection
