@@ -38,12 +38,12 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 	var profile models.Profile
 	err := decoder.Decode(&profile)
 
+	//handle error better
 	if err != nil {
 		panic(err)
 	}
 
-	log.Println("User input:", profile)
-	AddProfileMongo()
+	AddProfileMongo(profile)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Profile Created"))

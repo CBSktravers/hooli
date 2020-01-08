@@ -32,41 +32,19 @@ func createClient() *mongo.Client {
 	return client
 }
 
-func AddProfileMongo() {
+func AddProfileMongo(profile models.Profile) {
 	// Establish client to mongodabase
 	client := createClient()
 
 	// Get a handle for your collection
 	collection := client.Database("mongodb").Collection("profile")
 
-	// Some dummy data to add to the Database
-	comcast := models.Profile{"Comcast", "CBSVOD", map[string]string{
-		"provider_id": "cbs.com",
-		"provider":    "comcast",
-	}}
-	verizon := models.Profile{"Verizon", "CBSVOD", map[string]string{
-		"provider_id": "cbs.com",
-		"provider":    "verizon",
-	}}
-	dish := models.Profile{"Dish", "CWVOD", map[string]string{
-		"provider_id": "cw.com",
-		"provider":    "dish",
-	}}
 	// Insert a single document
-	insertResult, err := collection.InsertOne(context.TODO(), comcast)
+	insertResult, err := collection.InsertOne(context.TODO(), profile)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
-
-	// Insert multiple documents
-	profiles := []interface{}{dish, verizon}
-
-	insertManyResult, err := collection.InsertMany(context.TODO(), profiles)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Inserted multiple documents: ", insertManyResult.InsertedIDs)
 
 }
 
