@@ -42,7 +42,7 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	log.Println("User input:", profile.Name)
+	log.Println("User input:", profile)
 	//AddProfileMong()
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
