@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"fmt"
+	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -14,8 +15,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 // Handler for HTTP Get - "/profiles"
 // Returns all profiles documents
 func GetProfiles(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Inserted multiple documents: ")
-
+	log.Println("Get Profiles called by user:")
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Here are the requested profiles"))
@@ -31,7 +31,9 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Profile Deleted"))
 }
 func CreateProfile(w http.ResponseWriter, r *http.Request) {
-
+	log.Println("Create Profile called by user:")
+	log.Println("User raw input:", r)
+	log.Println("User input:", json.NewDecoder(r.Body))
 	AddProfileMong()
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
