@@ -1,5 +1,6 @@
 package handlers
 
+//handle errors return status of work
 import (
 	"context"
 	"log"
@@ -64,7 +65,10 @@ func getMongoProfile(profile models.Profile) models.Profile {
 	var result models.Profile
 
 	// Create filter to find item in database
-	filter := bson.D{{"name", profile.Name}}
+	//filter := bson.D{{"name", profile.Name}}
+	var filter bson.D
+	filter = append(filter, bson.E{"department", profile.Department})
+	filter = append(filter, bson.E{"name", profile.Name})
 	err := collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
 		log.Fatal(err)
@@ -152,6 +156,35 @@ func getMongoProfilesByDepartment(profile models.Profile) []*models.Profile {
 	// based on return change logs
 	log.Printf("Found multiple documents (array of pointers): %+v\n", results)
 	return results
+}
+
+func deleteMongoProfile(profile models.Profile) {
+	// Establish client to mongodabase
+	client := createClient()
+
+	// Get a handle for your collection
+	collection := client.Database("mongodb").Collection("profile")
+
+	var filter bson.D
+	filter = append(filter, bson.E{"department", profile.Department})
+	filter = append(filter, bson.E{"name", profile.Name})
+
+	// Delete all the documents in the collection
+	deleteResult, err := collection.DeleteMany(context.TODO(), filter)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Deleted %v documents in the trainers collection\n", deleteResult.DeletedCount)
+
+	// Close the connection once no longer needed
+	err = client.Disconnect(context.TODO())
+
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		log.Println("Connection to MongoDB closed.")
+	}
 }
 
 //updateProfile

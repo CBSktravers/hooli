@@ -78,6 +78,15 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Profile Updated"))
 }
 func DeleteProfile(w http.ResponseWriter, r *http.Request) {
+	log.Println("Delete Profile called by user:")
+	decoder := json.NewDecoder(r.Body)
+	var profile models.Profile
+	err := decoder.Decode(&profile)
+
+	//handle error better
+	if err != nil {
+		panic(err)
+	}
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Profile Deleted"))
