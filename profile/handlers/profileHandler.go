@@ -9,6 +9,17 @@ import (
 )
 
 func GetProfile(w http.ResponseWriter, r *http.Request) {
+	log.Println("Get Profile called by user:")
+	decoder := json.NewDecoder(r.Body)
+	var profile models.Profile
+	err := decoder.Decode(&profile)
+
+	//handle error better
+	if err != nil {
+		panic(err)
+	}
+
+	getMongoProfile(profile)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Here is the Profile"))
@@ -43,7 +54,7 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	AddProfileMongo(profile)
+	createMongoProfile(profile)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Profile Created"))

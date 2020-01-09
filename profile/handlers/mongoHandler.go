@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/CBSktravers/hooli/profile/models"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -28,11 +28,10 @@ func createClient() *mongo.Client {
 		log.Fatal(err)
 	}
 	log.Println("Connected to MongoDB!")
-
 	return client
 }
 
-func AddProfileMongo(profile models.Profile) {
+func createMongoProfile(profile models.Profile) {
 	// Establish client to mongodabase
 	client := createClient()
 
@@ -44,8 +43,34 @@ func AddProfileMongo(profile models.Profile) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+	log.Println("Inserted a single document: ", insertResult.InsertedID)
 
+	//Close client
+	err = client.Disconnect(context.TODO())
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Connection to MongoDB closed.")
+}
+
+func getMongoProfile(profile models.Profile) {
+	// Establish client to mongodabase
+	client := createClient()
+
+	// Get a handle for your collection
+	collection := client.Database("mongodb").Collection("profile")
+
+	var result models.Profile
+
+	// Create filter to find item in database
+	filter := bson.D{{"name", profile.Name}}
+	err := collection.FindOne(context.TODO(), filter).Decode(&result)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Found a single document: %+v\n", result)
 }
 
 //updateProfile
