@@ -32,6 +32,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 // Handler for HTTP Get - "/profiles"
 // Returns all profiles documents
 func GetProfiles(w http.ResponseWriter, r *http.Request) {
+	//Only want one param might no want to pass a profile
 	log.Println("Get Profiles called by user:")
 	decoder := json.NewDecoder(r.Body)
 	var profile models.Profile
@@ -42,7 +43,7 @@ func GetProfiles(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	results := getMongoProfiles()
+	results := getMongoProfiles(profile)
 	j, err := json.Marshal(results)
 	if err != nil {
 		panic(err)
@@ -51,7 +52,26 @@ func GetProfiles(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(j))
 }
+func GetAllProfiles(w http.ResponseWriter, r *http.Request) {
+	log.Println("Get Profiles called by user:")
+	decoder := json.NewDecoder(r.Body)
+	var profile models.Profile
+	err := decoder.Decode(&profile)
 
+	//handle error better
+	if err != nil {
+		panic(err)
+	}
+
+	results := getAllMongoProfiles()
+	j, err := json.Marshal(results)
+	if err != nil {
+		panic(err)
+	}
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(j))
+}
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)

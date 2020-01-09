@@ -75,7 +75,7 @@ func getMongoProfile(profile models.Profile) models.Profile {
 	return result
 }
 
-func getMongoProfiles() []*models.Profile {
+func getAllMongoProfiles() []*models.Profile {
 	// Establish client to mongodabase
 	client := createClient()
 
@@ -87,6 +87,45 @@ func getMongoProfiles() []*models.Profile {
 
 	// Finding multiple documents returns a cursor
 	cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var results []*models.Profile
+
+	// Iterate through the cursor
+	for cur.Next(context.TODO()) {
+		var elem models.Profile
+		err := cur.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		results = append(results, &elem)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	// Close the cursor once finished
+	cur.Close(context.TODO())
+
+	log.Println("Found multiple documents (array of pointers): %+v\n", results)
+	return results
+}
+func getMongoProfiles(profile models.Profile) []*models.Profile {
+	// Establish client to mongodabase
+	client := createClient()
+
+	// Get a handle for your collection
+	collection := client.Database("mongodb").Collection("profile")
+
+	findOptions := options.Find()
+	filter := bson.D{{"Department", profile.Department}}
+
+	// Finding multiple documents returns a cursor
+	cur, err := collection.Find(context.TODO(), filter, findOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
