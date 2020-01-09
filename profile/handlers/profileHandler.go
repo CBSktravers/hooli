@@ -33,10 +33,25 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 // Returns all profiles documents
 func GetProfiles(w http.ResponseWriter, r *http.Request) {
 	log.Println("Get Profiles called by user:")
+	decoder := json.NewDecoder(r.Body)
+	var profile models.Profile
+	err := decoder.Decode(&profile)
+
+	//handle error better
+	if err != nil {
+		panic(err)
+	}
+
+	results := getMongoProfiles()
+	j, err := json.Marshal(results)
+	if err != nil {
+		panic(err)
+	}
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Here are the requested profiles"))
+	w.Write([]byte(j))
 }
+
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
