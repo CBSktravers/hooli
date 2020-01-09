@@ -70,7 +70,7 @@ func getMongoProfile(profile models.Profile) models.Profile {
 		log.Fatal(err)
 	}
 
-	log.Println("Found a single document: %+v\n", result)
+	log.Printf("Found a single document: %+v\n", result)
 
 	return result
 }
@@ -111,10 +111,10 @@ func getAllMongoProfiles() []*models.Profile {
 	// Close the cursor once finished
 	cur.Close(context.TODO())
 
-	log.Println("Found multiple documents (array of pointers): %+v\n", results)
+	log.Printf("Found multiple documents (array of pointers): %+v\n", results)
 	return results
 }
-func getMongoProfiles(profile models.Profile) []*models.Profile {
+func getMongoProfilesByDepartment(profile models.Profile) []*models.Profile {
 	// Establish client to mongodabase
 	client := createClient()
 
@@ -122,7 +122,7 @@ func getMongoProfiles(profile models.Profile) []*models.Profile {
 	collection := client.Database("mongodb").Collection("profile")
 
 	findOptions := options.Find()
-	filter := bson.D{{"Department", profile.Department}}
+	filter := bson.D{{"department", profile.Department}}
 
 	// Finding multiple documents returns a cursor
 	cur, err := collection.Find(context.TODO(), filter, findOptions)
@@ -149,8 +149,8 @@ func getMongoProfiles(profile models.Profile) []*models.Profile {
 
 	// Close the cursor once finished
 	cur.Close(context.TODO())
-
-	log.Println("Found multiple documents (array of pointers): %+v\n", results)
+	// based on return change logs
+	log.Printf("Found multiple documents (array of pointers): %+v\n", results)
 	return results
 }
 

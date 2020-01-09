@@ -43,7 +43,7 @@ func GetProfiles(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	results := getMongoProfiles(profile)
+	results := getMongoProfilesByDepartment(profile)
 	j, err := json.Marshal(results)
 	if err != nil {
 		panic(err)
@@ -53,7 +53,7 @@ func GetProfiles(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(j))
 }
 func GetAllProfiles(w http.ResponseWriter, r *http.Request) {
-	log.Println("Get Profiles called by user:")
+	log.Println("Get all Profiles called by user:")
 	decoder := json.NewDecoder(r.Body)
 	var profile models.Profile
 	err := decoder.Decode(&profile)
