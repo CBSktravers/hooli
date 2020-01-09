@@ -54,7 +54,7 @@ func createMongoProfile(profile models.Profile) {
 	log.Println("Connection to MongoDB closed.")
 }
 
-func getMongoProfile(profile models.Profile) {
+func getMongoProfile(profile models.Profile) models.Profile {
 	// Establish client to mongodabase
 	client := createClient()
 
@@ -71,6 +71,8 @@ func getMongoProfile(profile models.Profile) {
 	}
 
 	log.Println("Found a single document: %+v\n", result)
+
+	return result
 }
 
 //updateProfile

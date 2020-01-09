@@ -19,10 +19,14 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	getMongoProfile(profile)
+	result := getMongoProfile(profile)
+	j, err := json.Marshal(result)
+	if err != nil {
+		panic(err)
+	}
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Here is the Profile"))
+	w.Write([]byte(j))
 }
 
 // Handler for HTTP Get - "/profiles"
