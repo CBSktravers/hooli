@@ -51,4 +51,10 @@ var routes = Routes{
 		"/profiles",          // Route pattern
 		handlers.GetProfiles, // Endpoint function
 	},
+	Route{
+		"GetAllProfiles",     // Name
+		"GET",                // HTTP method
+		"/allprofiles",       // Route pattern
+		handlers.GetProfiles, // Endpoint function
+	},
 }
