@@ -87,6 +87,7 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	deleteMongoProfile(profile)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Profile Deleted"))
