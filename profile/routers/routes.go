@@ -24,31 +24,31 @@ var routes = Routes{
 	Route{
 		"CreateProfile",        // Name
 		"POST",                 // HTTP method
-		"/createprofile",       // Route pattern
+		"/create",              // Route pattern
 		handlers.CreateProfile, // Endpoint function
 	},
 	Route{
 		"UpdateProfile",        // Name
 		"POST",                 // HTTP method
-		"/updateprofile",       // Route pattern
+		"/update",              // Route pattern
 		handlers.UpdateProfile, // Endpoint function
 	},
 	Route{
 		"DeleteProfile",        // Name
 		"POST",                 // HTTP method
-		"/deleteprofile",       // Route pattern
+		"/delete",              // Route pattern
 		handlers.DeleteProfile, // Endpoint function
 	},
 	Route{
 		"GetProfile",        // Name
 		"GET",               // HTTP method
-		"/profile",          // Route pattern
+		"/get",              // Route pattern
 		handlers.GetProfile, // Endpoint function
 	},
 	Route{
 		"GetProfiles",        // Name
 		"GET",                // HTTP method
-		"/profiles",          // Route pattern
+		"/list",              // Route pattern
 		handlers.GetProfiles, // Endpoint function
 	},
 	Route{
