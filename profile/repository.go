@@ -1,4 +1,4 @@
-package repository
+package profile
 
 import (
 	"github.com/CBSktravers/hooli/profile/models"
