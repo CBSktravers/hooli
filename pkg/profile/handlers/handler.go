@@ -5,15 +5,22 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/CBSktravers/hooli/pkg/profile"
 	"github.com/CBSktravers/hooli/pkg/profile/models"
 )
 
-func Create(w http.ResponseWriter, r *http.Request) {
+// ProfileResource manages endpoints for profile
+type ProfileResource struct {
+	profile.Service
+}
+
+// Create Endpoint that creates a profile
+func (r ProfileResource) Create(w http.ResponseWriter, req *http.Request) {
 	// Log users request
 	// check permissons now or early?
 	log.Println("Create Profile called by user:")
 
-	decoder := json.NewDecoder(r.Body)
+	decoder := json.NewDecoder(req.Body)
 	var profile models.Profile
 	err := decoder.Decode(&profile)
 
@@ -25,6 +32,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// call create profile
+	r.Service.Create(&profile)
 	// return and log response
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
