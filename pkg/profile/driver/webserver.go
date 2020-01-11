@@ -1,12 +1,13 @@
-package service
+package driver
 
 import (
 	"log"
 	"net/http"
 
-	"github.com/CBSktravers/hooli/profile/routers"
+	"github.com/CBSktravers/hooli/pkg/profile/routers"
 )
 
+//StartWebServer starts the profile server
 func StartWebServer(port string) {
 	r := routers.NewRouter()
 	http.Handle("/", r)
