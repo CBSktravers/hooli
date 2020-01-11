@@ -22,9 +22,9 @@ type Routes []Route
 var routes = Routes{
 
 	Route{
-		"CreateProfile",        // Name
-		"POST",                 // HTTP method
-		"/create",              // Route pattern
-		handlers.CreateProfile, // Endpoint function
+		"CreateProfile", // Name
+		"POST",          // HTTP method
+		"/create",       // Route pattern
+		handlers.Create, // Endpoint function
 	},
 }
