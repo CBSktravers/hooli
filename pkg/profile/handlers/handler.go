@@ -8,7 +8,7 @@ import (
 	"github.com/CBSktravers/hooli/pkg/profile/models"
 )
 
-func CreateProfile(w http.ResponseWriter, r *http.Request) {
+func Create(w http.ResponseWriter, r *http.Request) {
 	// Log users request
 	// check permissons now or early?
 	log.Println("Create Profile called by user:")
