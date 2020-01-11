@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/CBSktravers/hooli/profile/models"
+	"github.com/CBSktravers/hooli/pkg/profile/models"
 )
 
 // Create add a profile to mongodb
