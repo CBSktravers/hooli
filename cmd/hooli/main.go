@@ -34,7 +34,7 @@ func StartWebServer(port string) {
 	logger := log.New(os.Stdout, "hooli ", log.LstdFlags|log.Lshortfile)
 
 	//STOP using gorilla follow orignal to pass logger and service
-	h := handlers.NewHandlers(logger, *profileSvc)
+	h := handlers.NewHandlers(logger, profileSvc)
 
 	mux := http.NewServeMux()
 

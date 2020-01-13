@@ -15,7 +15,7 @@ type Handlers struct {
 	service profile.Service
 }
 
-func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
+func (h Handlers) SetupRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/Create", h.Create)
 }
 
