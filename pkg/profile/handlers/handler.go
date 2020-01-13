@@ -15,7 +15,7 @@ type Handlers struct {
 	service profile.Service
 }
 
-func (h Handlers) SetupRoutes(mux *http.ServeMux) {
+func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/Create", h.Create)
 }
 
@@ -44,7 +44,7 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// call create profile
-	h.service.Create(&profile)
+	h.service.Create(profile)
 	// return and log response
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
