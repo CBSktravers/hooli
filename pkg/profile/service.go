@@ -8,7 +8,7 @@ import (
 
 // Service manages cloud credentials
 type Service interface {
-	Create(profile *models.Profile) error
+	Create(profile models.Profile) error
 }
 
 // DefaultService is an implementation of Service

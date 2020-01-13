@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/CBSktravers/hooli/pkg/profile"
+	"github.com/CBSktravers/hooli/pkg/profile/handlers"
 	profileRepo "github.com/CBSktravers/hooli/pkg/profile/repository"
-	"github.com/CBSktravers/hooli/pkg/profile/routers"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -29,9 +30,18 @@ func StartWebServer(port string) {
 	collection := client.Database("mongodb").Collection("profile")
 	profileSvc := profile.NewDefaultService(profileRepo.NewMongo(collection))
 
+	// Logger used by profile
+	logger := log.New(os.Stdout, "hooli ", log.LstdFlags|log.Lshortfile)
+
 	//STOP using gorilla follow orignal to pass logger and service
-	r := routers.NewRouter()
-	http.Handle("/", r)
+	h := handlers.NewHandlers(logger, *profileSvc)
+
+	mux := http.NewServeMux()
+
+	h.SetupRoutes(mux)
+
+	//r := routers.NewRouter()
+	//http.Handle("/", r)
 	log.Println("Starting HTTP service at " + port)
 	err := http.ListenAndServe(":"+port, nil) // Goroutine will block here
 
