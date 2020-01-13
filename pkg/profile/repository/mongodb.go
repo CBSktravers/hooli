@@ -20,6 +20,7 @@ func NewMongo(db *mongo.Collection) *Mongo {
 // Create add a profile to mongodb repo
 func (r *Mongo) Create(profile *models.Profile) error {
 	// use buffalo validator to validate input
+	// Does one specific thing
 	log.Println("Mongo Create called")
 	return nil
 }

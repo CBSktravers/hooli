@@ -10,17 +10,29 @@ import (
 )
 
 // ProfileResource manages endpoints for profile
-type ProfileResource struct {
-	profile.Service
+type Handlers struct {
+	logger  *log.Logger
+	service profile.Service
+}
+
+func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("/Create", h.Create)
+}
+
+func NewHandlers(logger *log.Logger, service profile.Service) *Handlers {
+	return &Handlers{
+		logger:  logger,
+		service: service,
+	}
 }
 
 // Create Endpoint that creates a profile
-func (r ProfileResource) Create(w http.ResponseWriter, req *http.Request) {
+func (h Handlers) Create(w http.ResponseWriter, r *http.Request) {
 	// Log users request
 	// check permissons now or early?
 	log.Println("Create Profile called by user:")
 
-	decoder := json.NewDecoder(req.Body)
+	decoder := json.NewDecoder(r.Body)
 	var profile models.Profile
 	err := decoder.Decode(&profile)
 
@@ -32,7 +44,7 @@ func (r ProfileResource) Create(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// call create profile
-	r.Service.Create(&profile)
+	h.service.Create(&profile)
 	// return and log response
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)

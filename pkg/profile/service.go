@@ -23,6 +23,7 @@ func NewDefaultService(repo Repository) *DefaultService {
 
 // Create makes a new Profile into database service
 func (s *DefaultService) Create(profile models.Profile) error {
+	// All logic to create profile and call repo to perform task
 	log.Println("Service create called")
 	s.repo.Create(&profile)
 	return nil
