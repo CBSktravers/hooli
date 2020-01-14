@@ -11,8 +11,8 @@ import (
 
 // ProfileResource manages endpoints for profile
 type Handlers struct {
-	logger  *log.Logger
-	service profile.Service
+	logger *log.Logger
+	//service profile.Service
 }
 
 func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
@@ -21,8 +21,8 @@ func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
 
 func NewHandlers(logger *log.Logger, service profile.Service) *Handlers {
 	return &Handlers{
-		logger:  logger,
-		service: service,
+		logger: logger,
+		//service: service,
 	}
 }
 
@@ -44,7 +44,7 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// call create profile
-	h.service.Create(profile)
+	//h.service.Create(profile)
 	// return and log response
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
