@@ -30,7 +30,6 @@ func (r *Mongo) Create(profile *models.Profile) error {
 
 	//Close client
 	//err = client.Disconnect(context.TODO())
-
 	if err != nil {
 		log.Fatal(err)
 	}
