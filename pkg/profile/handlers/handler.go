@@ -35,7 +35,7 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var profile models.Profile
 	err := decoder.Decode(&profile)
-
+	log.Println(profile.Name)
 	// Varify all input is there and correctly formated
 
 	//handle error better
