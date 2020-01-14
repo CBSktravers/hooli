@@ -30,21 +30,16 @@ func StartWebServer(port string) {
 	collection := client.Database("mongodb").Collection("profile")
 	profileSvc := profile.NewDefaultService(profileRepo.NewMongo(collection))
 
-	// Logger used by profile
 	logger := log.New(os.Stdout, "hooli ", log.LstdFlags|log.Lshortfile)
+	logger.Println("Starting metadata HTTP service at " + port)
 
-	//STOP using gorilla follow orignal to pass logger and service
 	h := handlers.NewHandlers(logger, profileSvc)
 
 	mux := http.NewServeMux()
 
 	h.SetupRoutes(mux)
 
-	//r := routers.NewRouter()
-	//http.Handle("/", r)
-	log.Println("Starting HTTP service at " + port)
-	err := http.ListenAndServe(":"+port, nil) // Goroutine will block here
-
+	err := http.ListenAndServe(":"+port, mux)
 	if err != nil {
 		log.Println("An error occured starting HTTP listener at port " + port)
 		log.Println("Error: " + err.Error())
