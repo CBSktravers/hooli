@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"log"
 
 	"github.com/CBSktravers/hooli/pkg/profile/models"
@@ -19,8 +20,21 @@ func NewMongo(db *mongo.Collection) *Mongo {
 
 // Create add a profile to mongodb repo
 func (r *Mongo) Create(profile *models.Profile) error {
-	// use buffalo validator to validate input
-	// Does one specific thing
-	log.Println("Mongo Create called")
+	// Insert a single document
+	//insertResult, err := collection.InsertOne(context.TODO(), profile)
+	insertResult, err := r.db.InsertOne(context.TODO(), profile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Inserted a single document: ", insertResult.InsertedID)
+
+	//Close client
+	//err = client.Disconnect(context.TODO())
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Connection to MongoDB closed.")
+
 	return nil
 }
