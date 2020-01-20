@@ -8,32 +8,25 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// Mongo is an implementation of the profile repository backed by a Mongo DB
+// Mongo is an implementation of the profile repository backed by a MongoDB
 type Mongo struct {
 	db *mongo.Collection
 }
 
-// NewMongo creates and returns a pointer to an Mongo
+// NewMongo creates and returns a pointer to Mongo
 func NewMongo(db *mongo.Collection) *Mongo {
 	return &Mongo{db: db}
 }
 
-// Create add a profile to mongodb repo
-func (r *Mongo) Create(profile *models.Profile) error {
-	// Insert a single document
-	//insertResult, err := collection.InsertOne(context.TODO(), profile)
-	insertResult, err := r.db.InsertOne(context.TODO(), profile)
+// Create add a profile to mongodb db
+func (m *Mongo) Create(profile *models.Profile) error {
+	// Insert a single document into db
+	insertResult, err := m.db.InsertOne(context.TODO(), profile)
+	// Check if error occured adding to database
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	log.Println("Inserted a single document: ", insertResult.InsertedID)
-
-	//Close client
-	//err = client.Disconnect(context.TODO())
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println("Connection to MongoDB closed.")
-
-	return nil
+	//Look into connection pooling/closing connections
+	return err
 }

@@ -4,9 +4,10 @@ import (
 	"log"
 
 	"github.com/CBSktravers/hooli/pkg/profile/models"
+	v "github.com/gobuffalo/validate"
 )
 
-// Service manages cloud credentials
+// Service manages profile
 type Service interface {
 	Create(profile models.Profile) error
 }
@@ -24,7 +25,13 @@ func NewDefaultService(repo Repository) *DefaultService {
 // Create makes a new Profile into database service
 func (s *DefaultService) Create(profile models.Profile) error {
 	// All logic to create profile and call repo to perform task
+	// validate all infomation is here
 	log.Println("Service create called")
-	s.repo.Create(&profile)
+	errors := v.Validate(&profile)
+	if len(errors.Errors) != 0 {
+		log.Println(errors.Errors)
+	}
+
+	//err := s.repo.Create(&profile)
 	return nil
 }

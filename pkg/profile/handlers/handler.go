@@ -28,24 +28,29 @@ func NewHandlers(logger *log.Logger, service profile.Service) *Handlers {
 
 // Create Endpoint that creates a profile
 func (h Handlers) Create(w http.ResponseWriter, r *http.Request) {
-	// Log users request
-	// check permissons now or early?
-	log.Println("Create Profile called by user:")
+	// check user credientaion were passed
+	keys, ok := r.URL.Query()["UserName"]
+	if !ok || len(keys[0]) < 1 {
+		// Failed to get user
+		log.Println("Url Param 'UserName' is missing")
+	}
+	user := keys[0]
+	log.Println("Create profile called by user:", user)
+	// autherization of user request has permission
 
 	decoder := json.NewDecoder(r.Body)
 	var profile models.Profile
 	err := decoder.Decode(&profile)
-	log.Println(profile.Name)
-	// Varify all input is there and correctly formated
+	log.Printf("%s wants to create new Profile %s", user, profile)
 
 	//handle error better
 	if err != nil {
-		panic(err)
-	}
+		// return and log response
+		log.Println("Fialed to decode query", err)
 
-	// call create profile
-	h.service.Create(profile)
-	// return and log response
+	}
+	// call create to add profile to database
+	err = h.service.Create(profile)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Profile Created"))
