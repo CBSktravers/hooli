@@ -10,10 +10,9 @@ type Profile struct {
 	Name       string            `bson:"name" json:"name"`
 	Department string            `bson:"department" json:"department"`
 	Keys       map[string]string `bson:"keys" json:"keys"`
-	//CreatedOn  time.Time     `json:"createdon,omitempty"`
-	//CreatedBy Edit list?
 }
 
+// IsValid is called by gobuffalo to check if models is fully populated
 func (p *Profile) IsValid(errors *v.Errors) {
 	if p.Name == "" {
 		errors.Add("name", "Name must not be blank!")

@@ -1,7 +1,0 @@
-{
-    "Server"      : "localhost:27017",
-    "MongoDBHost" : "mongodb",
-    "MongoDBUser"	: "",
-    "MongoDBPwd"	: "",
-    "Database"    : "profile"
-}
