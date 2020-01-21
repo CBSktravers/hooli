@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 
@@ -32,7 +33,10 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) {
 	keys, ok := r.URL.Query()["UserName"]
 	if !ok || len(keys[0]) < 1 {
 		// Failed to get user
-		log.Println("Url Param 'UserName' is missing")
+		err := errors.New("Forbidden: Invlaid credientails")
+		DisplayAppError(w, err, "Url Param 'UserName' is missing or account not authorized", 500)
+		log.Println("Unathorized account called")
+		return
 	}
 	user := keys[0]
 	log.Println("Create profile called by user:", user)
@@ -46,12 +50,46 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) {
 	//handle error better
 	if err != nil {
 		// return and log response
-		log.Println("Fialed to decode query", err)
+		DisplayAppError(w, err, "Failed to decode query", 500)
+		log.Println("Failed to decode query", err)
+		return
 
 	}
 	// call create to add profile to database
 	err = h.service.Create(profile)
+	if err != nil {
+		// return and log response
+		DisplayAppError(w, err, "Failed add profile into database", 500)
+		log.Println("Failed add profile into database", err)
+		return
+
+	}
+	// Send response back
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Profile Created"))
+}
+
+type appError struct {
+	Error      string `json:"error"`
+	Message    string `json:"message"`
+	HttpStatus int    `json:"status"`
+}
+type errorResource struct {
+	Data appError `json:"data"`
+}
+
+// Function return error message
+func DisplayAppError(w http.ResponseWriter, handlerError error, message string, code int) {
+	errObj := appError{
+		Error:      handlerError.Error(),
+		Message:    message,
+		HttpStatus: code,
+	}
+	log.Printf("AppError: %s\n", handlerError)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(code)
+	if j, err := json.Marshal(errorResource{Data: errObj}); err == nil {
+		w.Write(j)
+	}
 }

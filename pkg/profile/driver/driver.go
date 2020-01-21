@@ -1,13 +1,68 @@
 package driver
 
 import (
+	"context"
 	"log"
+	"net/http"
 	"os"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/CBSktravers/hooli/pkg/profile"
+	"github.com/CBSktravers/hooli/pkg/profile/handlers"
+	profileRepo "github.com/CBSktravers/hooli/pkg/profile/repository"
 )
 
 // Configuration struct
 type Configuration struct {
 	Server, MongoDBHost, DBUser, DBPwd, Database string
+}
+
+//StartWebServer starts the profile server
+func StartWebServer(port string) {
+	// Set up app config server default values
+	AppConfig := DefaultConfiguration()
+	// if envrionment values exist overwirite defaule values
+	loadConfigFromEnvironment(&AppConfig)
+	uri := AppConfig.MongoDBHost + "://" + AppConfig.Server
+	// Set client options
+	clientOptions := options.Client().ApplyURI(uri)
+
+	// Connect to MongoDB
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Check the connection
+	err = client.Ping(context.TODO(), nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Connected to MongoDB!")
+
+	collection := client.Database(AppConfig.Database).Collection(AppConfig.Database)
+	// Get a handle for your collection
+	profileSvc := profile.NewDefaultService(profileRepo.NewMongo(collection))
+
+	logger := log.New(os.Stdout, "hooli ", log.LstdFlags|log.Lshortfile)
+	//Set up http handlers
+	logger.Println("Starting metadata HTTP service at " + port)
+
+	h := handlers.NewHandlers(logger, profileSvc)
+
+	mux := http.NewServeMux()
+
+	h.SetupRoutes(mux)
+
+	err = http.ListenAndServe(":"+port, mux)
+	if err != nil {
+		log.Println("An error occured starting HTTP listener at port " + port)
+		log.Println("Error: " + err.Error())
+	}
 }
 
 // DefaultConfiguration create new instance of Something
@@ -52,11 +107,4 @@ func loadConfigFromEnvironment(appConfig *Configuration) {
 		appConfig.Database = database
 		log.Printf("[INFO]: MongoDB database information loaded from env.")
 	}
-}
-
-// ConfigProfile profile database connection
-func createConfig() Configuration {
-	AppConfig := DefaultConfiguration()
-	loadConfigFromEnvironment(&AppConfig)
-	return AppConfig
 }
